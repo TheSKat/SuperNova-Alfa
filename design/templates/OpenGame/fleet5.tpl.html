@@ -1,0 +1,116 @@
+<!-- INCLUDE fleet_javascript -->
+
+<script type="text/javascript" src="js/fleet_gather.js"></script>
+
+<script type="text/javascript">
+  /* <!-- BEGIN colonies --> */
+  colonies['{colonies.ID}'] = [Math.intVal('{colonies.METAL}'), Math.intVal('{colonies.CRYSTAL}'), Math.intVal('{colonies.DEUTERIUM}'), Math.intVal('{colonies.FLEET_CAPACITY}')];
+  /* <!-- END colonies --> */
+</script>
+
+<h2>{L_flt_gather_all}</h2>
+<!-- IF .results -->
+  <h3>{L_flt_gather_report}</h3>
+  <table border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <td class="c">{L_fl_from}</td>
+      <td class="c">{L_flt_report}</td>
+    </tr>
+
+    <!-- BEGIN results -->
+    <tr>
+      <td>{results.TYPE_PRINT} &quot;{results.NAME}&quot; [{results.GALAXY}:{results.SYSTEM}:{results.PLANET}]</td>
+      <td>
+        <b>{results.MESSAGE}</b><br>
+        <!-- BEGIN units -->
+          {results.units.NAME} {results.units.AMOUNT}<br />
+        <!-- END units -->
+      </td>
+    </tr>
+    <!-- END results -->
+  </table>
+  <br />
+<!-- ENDIF -->
+
+
+<form action="fleet.php?fleet_page=5" method="post">
+  <table border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <td class="c">{L_sys_coordinates}</td>
+      <td class="c">{L_fl_from}</td>
+      <td class="c"><input type="checkbox" checked class="planet_gather" onchange="jQuery('.planet_metal').attr('checked', jQuery(this).is(':checked'));reCalcGathering();">{L_sys_metal}</td>
+      <td class="c"><input type="checkbox" checked class="planet_gather" onchange="jQuery('.planet_crystal').attr('checked', jQuery(this).is(':checked'));reCalcGathering();">{L_sys_crystal}</td>
+      <td class="c"><input type="checkbox" checked class="planet_gather" onchange="jQuery('.planet_deuterium').attr('checked', jQuery(this).is(':checked'));reCalcGathering();">{L_sys_deuterium}</td>
+      <td class="c"><input type="checkbox" checked id="planet_gather_all" onchange="jQuery('.planet_gather').attr('checked', jQuery(this).is(':checked'));reCalcGathering();">{L_res_total}</td>
+      <td class="c">{L_sys_cargo_bays}</td>
+      <td class="c">{L_sys_time}</td>
+    </tr>
+
+    <!-- BEGIN colonies -->       
+      <tr>
+        <th>[{colonies.GALAXY}:{colonies.SYSTEM}:{colonies.PLANET}]</th>
+        <th>
+          <span class="fl">{colonies.TYPE_PRINT} &quot;{colonies.NAME}&quot;</span>
+        </th>
+        <th>
+          <span class="fl"><input type="checkbox" checked name="resources[{colonies.ID}][{D_RES_METAL}]"     id="ga_{colonies.ID}_0" value="1" class="planet_gather planet_metal planet_{colonies.ID}" onchange="reCalcGathering();"></span>
+          <span class="fr">{colonies.METAL_TEXT}</span>
+        </th>
+        <th>
+          <span class="fl"><input type="checkbox" checked name="resources[{colonies.ID}][{D_RES_CRYSTAL}]"   id="ga_{colonies.ID}_1" value="1" class="planet_gather planet_crystal planet_{colonies.ID}" onchange="reCalcGathering();"></span>
+          <span class="fr">{colonies.CRYSTAL_TEXT}</span>
+        </th>
+        <th>
+          <span class="fl"><input type="checkbox" checked name="resources[{colonies.ID}][{D_RES_DEUTERIUM}]" id="ga_{colonies.ID}_2" value="1" class="planet_gather planet_deuterium planet_{colonies.ID}" onchange="reCalcGathering();"></span>
+          <span class="fr">{colonies.DEUTERIUM_TEXT}</span>
+        </th>
+        <th>
+          <span class="fl"><input type="checkbox" checked name="planets[]" value="{colonies.ID}" id="planet_{colonies.ID}" class="planet_gather" onchange="jQuery('.planet_{colonies.ID}').attr('checked', jQuery(this).is(':checked'));reCalcGathering();"></span>
+          <span class="fr" id="ga_{colonies.ID}_a">0</span>
+        </th>
+        <!-- IF colonies.FLEET_CAPACITY -->
+        <th><span class="fr">{colonies.FLEET_CAPACITY_TEXT}</span></th>
+        <th><span class="fr">{colonies.DURATION_TEXT}</span></th>
+        <!-- ELSE -->
+        <th colspan=2><span class="negative">{L_flt_no_transports}</span></th>
+        <!-- ENDIF -->
+      </tr>
+    <!-- BEGINELSE colonies -->
+      <th colspan="8">{L_fl_nocolonies}</th>
+    <!-- END colonies -->
+
+    <!-- IF METAL_NEED > 0 || CRYSTAL_NEED > 0 || DEUTERIUM_NEED > 0 -->
+      <!-- DEFINE $ROWSPAN = 3 -->
+    <!-- ELSE -->
+      <!-- DEFINE $ROWSPAN = 2 -->
+    <!-- ENDIF -->
+    <tr class="c_r">
+      <th class="c_l" colspan="2">{L_sys_total}</th>
+      <th><span id="ga_a_0"></span></th>
+      <th><span id="ga_a_1"></span></th>
+      <th><span id="ga_a_2"></span></th>
+      <th><span id="ga_a_a"></span></th>
+      <th class="c_c" colspan="2" rowspan="{$ROWSPAN}"><input type="submit" value="{L_flt_gather_all}" /></th>
+    </tr>
+
+    <!-- IF $ROWSPAN > 2 -->
+    <tr class="c_r">
+      <th class="c_l" colspan="2">{L_sys_need}</th>
+      <th>{METAL_NEED}</th>
+      <th>{CRYSTAL_NEED}</th>
+      <th>{DEUTERIUM_NEED}</th>
+      <th>&nbsp;</th>
+    </tr>
+    <!-- ENDIF -->
+
+    <tr class="c_r">
+      <th class="c_l" colspan="2">{L_sys_on_planet}</th>
+      <th>{PLANET_METAL_TEXT}</th>
+      <th>{PLANET_CRYSTAL_TEXT}</th>
+      <th>{PLANET_DEUTERIUM_TEXT}</th>
+      <th>&nbsp;</th>
+    </tr>
+  </table>
+</form>
+
+<!-- INCLUDE page_hint -->

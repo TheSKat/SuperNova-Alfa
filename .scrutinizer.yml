@@ -1,0 +1,90 @@
+build:
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=some-file tests --configuration tests/phpunit.xml'
+                coverage:
+                    file: 'some-file'
+                    format: 'clover'
+    environment:
+        php: 5.6
+#    nodes:
+#        tests: true
+#        analysis:
+#            tests:
+#                override:
+#                    -
+#                        command: phpcs-run
+#                        use_website_config: true
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            tests:
+                override: [php-scrutinizer-run]
+checks:
+     php:
+        avoid_superglobals: false
+        check_method_contracts:
+            verify_interface_like_constraints: true
+            verify_documented_constraints: true
+            verify_parent_constraints: true
+        fix_php_opening_tag: false
+        remove_php_closing_tag: true
+        no_exit: false
+        no_long_variable_names:
+            maximum: '30'
+        no_mixed_inline_html: false
+        parameter_doc_comments: true
+        psr2_control_structure_declaration: false
+        require_braces_around_control_structures: false
+        return_doc_comments: true
+        security_vulnerabilities: true
+        simplify_boolean_return: true
+
+filter:
+#     excluded_paths:
+#         - admin/sxd/*
+    excluded_paths:
+## Excluding Tests, Specs and Vendor Directories at any Level
+        - tests/
+#        - tests/**/*
+        - tests.int/
+#        - tests.int/**/*
+        - vendor/
+#        - "**/vendor/**/*"
+        - spec/
+# Excluding Sypex Dumper files
+        - admin/sxd/*
+#        - **/sxd/
+#        - "admin/sxd/**/*"
+# Excluding minified files
+#        - "**.min.js"
+#        - "**.min.css"
+#        - *.min.js
+#        - **/**.min.js
+#        - *.min.css
+#        - */*/*.min.css
+        - design/*/*.min.css
+        - js/*/*.min.js
+        - js/lib/*
+    dependency_paths:
+        - vendor/
+coding_style:
+    php:
+        indentation:
+            general:
+                size: 2
+        spaces:
+            around_operators:
+                concatenation: true
+        braces:
+            classes_functions:
+                class: end-of-line
+                function: end-of-line
+                closure: end-of-line
+        upper_lower_casing:
+            keywords:
+                general: lower
+            constants:
+                true_false_null: lower

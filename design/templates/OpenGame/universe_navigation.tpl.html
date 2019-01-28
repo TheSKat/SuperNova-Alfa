@@ -1,0 +1,34 @@
+<form action="galaxy.php?mode=1" method="post" id="galaxy_form">
+  <input type="hidden" id="auto" value="dr">
+  <input type="hidden" id="universe_scan_mode" name="scan" value="{UNIVERSE_SCAN_MODE}">
+
+  <div id="uni_nav_scan_wrapper">
+    <!-- IF UNIVERSE_SCAN_MODE -->
+    <span class="button_pseudo uni_scan" id="universeScanStop">{L_uni_scan_stop}</span>
+    <!-- ELSE -->
+    <span class="button_pseudo uni_scan" id="universeScanStart">{L_uni_scan_start}</span>
+    <!-- ENDIF -->
+  </div>
+
+  <div class="uni_nav_wrapper header">
+    <div class="uni_nav_wrapper2 header">
+      <div class="uni_nav_child">
+        <label for="galaxy">{L_Galaxy}</label>
+        <span class="button_pseudo" id="galaxyLeft">&lt;</span>
+        <input name="galaxy" id="galaxy" value="{galaxy}" size="5" maxlength="3" tabindex="1" type="text"/>
+        <span class="button_pseudo" id="galaxyRight">&gt;</span>
+      </div>
+
+      <div class="uni_nav_child">
+        <label for="system">{L_Solar_system}</label>
+        <span class="button_pseudo" id="systemLeft">&lt;</span>
+        <input name="system" id="system" value="{system}" size="5" maxlength="3" tabindex="2" type="text"/>
+        <span class="button_pseudo" id="systemRight">&gt;</span>
+      </div>
+    </div>
+
+    <div class="uni_nav_child">
+      <input value="{L_sys_goto}" type="submit"/>
+    </div>
+  </div>
+</form>
